@@ -40,7 +40,7 @@ export class UserDashboardComponent implements OnInit {
       },
       (err) => {
         console.log(JSON.stringify(err));
-        this.errors = err.error;
+        this.errors = err;
       }
     );
   }

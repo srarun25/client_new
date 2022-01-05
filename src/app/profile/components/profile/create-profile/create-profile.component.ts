@@ -9,7 +9,8 @@ import { ProfileService } from 'src/app/profile/services/profile.service';
   styleUrls: ['./create-profile.component.css'],
 })
 export class CreateProfileComponent implements OnInit {
-  profile: Profile = {
+  profile: any;
+  /* Profile = {
     handle: '',
     status: '',
     company: '',
@@ -24,7 +25,7 @@ export class CreateProfileComponent implements OnInit {
     youtube: '',
     instagram: '',
     user: '',
-  };
+  }; */
   errors: any = {};
   constructor(private profileService: ProfileService, private router: Router) {}
   profileSubmit() {
@@ -41,5 +42,20 @@ export class CreateProfileComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const userid = JSON.parse(localStorage.getItem('userDetails') || '{}').id;
+    this.profileService.getProfileDetailsByUserId(userid).subscribe(
+      (res) => {
+        console.log(JSON.stringify(res));
+        this.profile = res;
+      },
+      (err) => {
+        if (err.error.status === '401') {
+          this.router.navigate(['/user/login']);
+        }
+        this.profile = null;
+        console.log(JSON.stringify(err));
+      }
+    );
+  }
 }

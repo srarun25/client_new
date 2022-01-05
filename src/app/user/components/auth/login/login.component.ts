@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
+import { SubjectService } from 'src/app/shared/services/subject.service';
 import { AuthService } from 'src/app/user/services/auth.service';
 
 @Component({
@@ -13,7 +14,11 @@ export class LoginComponent implements OnInit {
   password: string;
   errors: any = {};
   decoded: any;
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private subjectService: SubjectService
+  ) {}
 
   ngOnInit(): void {}
   loginSubmit() {
@@ -21,9 +26,10 @@ export class LoginComponent implements OnInit {
       (res) => {
         console.log(JSON.stringify(res));
         localStorage.setItem('token', res.token);
-        this.decoded = jwt_decode(res.token);
-        console.log(this.decoded);
-        localStorage.setItem('userDetails', JSON.stringify(this.decoded));
+          this.decoded = jwt_decode(res.token);
+          console.log(this.decoded);
+          this.subjectService.loginSubject.next(true);
+          localStorage.setItem('userDetails', JSON.stringify(this.decoded));
         this.router.navigate(['/dashboard/user']);
       },
       (err) => {

@@ -17,8 +17,9 @@ export class DisplayProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const { id } = this.activatedRoute.snapshot.params;
-    this._userId = JSON.parse(localStorage.getItem('userdetails') || '{}').id;
+    debugger;
+    const { id } = this.activatedRoute.snapshot.params; //destructuring
+    this._userId = JSON.parse(localStorage.getItem('userDetails') || '{}').id;
     this.profileService.getProfileDetailsByUserId(id).subscribe(
       (res) => {
         console.log('getProfileDetailsByUserId::::', JSON.stringify(res));
@@ -45,6 +46,6 @@ export class DisplayProfileComponent implements OnInit {
   }
 
   editProfile() {
-    this.router.navigate(['/profile/update']);
+    this.router.navigate(['/profile/create-profile']); //(['/profile/update']);
   }
 }

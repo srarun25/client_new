@@ -28,7 +28,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }
     if (localStorage.getItem('token')) {
       const data = JSON.parse(localStorage.getItem('userDetails') || '{}');
-
+      
       if (new Date().getTime() / 1000 < data.exp) {
         console.log('token is valid');
         request = request.clone({
